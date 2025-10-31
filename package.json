@@ -1,0 +1,50 @@
+{
+  "name": "hh-auto-respond-eda",
+  "version": "1.0.0",
+  "description": "Educational event-driven job auto-response system for HH.ru | Образовательный проект автооткликов на вакансии HH.ru с событийно-управляемой архитектурой",
+  "private": true,
+  "scripts": {
+    "db:up": "docker-compose -f docker/docker-compose.yml up -d",
+    "db:down": "docker-compose -f docker/docker-compose.yml down",
+    "db:logs": "docker logs -f hh-auto-respond-postgres",
+    "db:status": "docker ps --filter name=hh-auto-respond-postgres",
+    "db:reset": "npm run db:down && docker volume rm hh_auto_respond_postgres_data 2>/dev/null || true && npm run db:up && sleep 3 && npm run migrate && npm run seed",
+    "migrate": "prisma migrate dev",
+    "migrate:deploy": "prisma migrate deploy",
+    "seed": "prisma db seed",
+    "studio": "prisma studio",
+    "generate": "prisma generate",
+    "backup": "node scripts/backup.js",
+    "restore": "node scripts/restore.js",
+    "backup:list": "ls -lh backups/*.sql 2>/dev/null || echo 'Нет бэкапов'",
+    "setup": "npm install && npm run db:up && sleep 3 && npm run migrate && npm run seed",
+    "clean": "npm run db:down && docker volume rm hh_auto_respond_postgres_data 2>/dev/null || true && rm -rf node_modules prisma/migrations"
+  },
+  "prisma": {
+    "seed": "node prisma/seed.js"
+  },
+  "keywords": [
+    "event-driven",
+    "eda",
+    "nestjs",
+    "vue",
+    "job-automation",
+    "hh.ru",
+    "bullmq",
+    "postgresql",
+    "prisma",
+    "educational",
+    "tutorial",
+    "queue-system",
+    "auto-respond",
+    "vacancy-automation"
+  ],
+  "author": "@divatoz",
+  "license": "MIT",
+  "dependencies": {
+    "@prisma/client": "^5.20.0"
+  },
+  "devDependencies": {
+    "prisma": "^5.20.0"
+  }
+}
